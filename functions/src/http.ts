@@ -30,13 +30,15 @@ app.post('/dinosaur', async (request, response) => {
     await dinoRef.set({
             name: dino.name,
             diet: dino.diet,
-            // lived: dino.lived,
-            // found: dino.found,
-            // pronunciation: dino.pronunciation,
-            // meaning: dino.meaning,
-            // Type: dino.type,
-            // length: dino.length,
-            // weight: dino.weight
+            livedFrom: dino.livedFrom,
+            livedTo: dino.livedTo,
+            era: dino.era,
+            found: dino.found,
+            pronunciation: dino.pronunciation,
+            meaning: dino.meaning,
+            Type: dino.type,
+            length: dino.length,
+            weight: dino.weight
         })
     response.send(`created ${dino.name}`)
 })
