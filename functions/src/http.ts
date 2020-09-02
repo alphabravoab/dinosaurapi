@@ -17,9 +17,11 @@ app.get('/dinosaur', (request, response) => {
     response.send('should send an array of all dinosaur names')
 })
 
-app.get('/dinosaur/:dino', (request, response) => {
+app.get('/dinosaur/:dino', async (request, response) => {
     const dino = request.params.dino
-    response.send(`asking about ${dino}`)
+    const dinoRef = db.collection('dinosaurs').doc(dino)
+    const doc = await dinoRef.get();
+    response.send(doc.data())
 })
 
 app.post('/dinosaur', async (request, response) => {
@@ -36,9 +38,10 @@ app.post('/dinosaur', async (request, response) => {
             found: dino.found,
             pronunciation: dino.pronunciation,
             meaning: dino.meaning,
-            Type: dino.type,
+            type: dino.type,
             length: dino.length,
-            weight: dino.weight
+            weight: dino.weight,
+            image: dino.images
         })
     response.send(`created ${dino.name}`)
 })
