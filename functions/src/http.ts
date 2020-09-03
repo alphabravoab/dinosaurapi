@@ -42,8 +42,8 @@ app.get('/dinosaur/random', async (request, response) => {
       })
     const randomDino: string = dinoNames[Math.floor( Math.random() * dinoNames.length)]
     const selectedDino = dinoRef.doc(randomDino)
-    const doc = await selectedDino.get();
-    response.send(doc.data())
+    const luckyDino = await selectedDino.get();
+    response.send(luckyDino.data())
 })
 
 app.get('/dinosaur/:dino', async (request, response) => {
