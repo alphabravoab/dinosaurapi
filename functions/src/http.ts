@@ -13,8 +13,37 @@ const db = admin.firestore();
 const app = express();
 app.use(cors({origin: true}));
 
-app.get('/dinosaur', (request, response) => {
-    response.send('should send an array of all dinosaur names')
+app.get('/dinosaur', async (request, response) => {
+    const dinoRef = db.collection('dinosaurs');
+    const dinos = await dinoRef.get();
+    const dinoArray: Array<Object>  = [];
+    dinos.forEach(doc => {
+        dinoArray.push( doc.data());
+      })
+    response.send(dinoArray);
+})
+
+app.get('/dinosaur/names', async (request, response) => {
+    const dinoRef = db.collection('dinosaurs');
+    const dinos = await dinoRef.get();
+    const dinoNames: Array<String>  = [];
+    dinos.forEach(doc => {
+        dinoNames.push(doc.id);
+      })
+    response.send(dinoNames);
+})
+
+app.get('/dinosaur/random', async (request, response) => {
+    const dinoRef = db.collection('dinosaurs');
+    const dinos = await dinoRef.get();
+    const dinoNames: Array<string>  = [];
+    dinos.forEach(doc => {
+        dinoNames.push(doc.id);
+      })
+    const randomDino: string = dinoNames[Math.floor( Math.random() * dinoNames.length)]
+    const selectedDino = dinoRef.doc(randomDino)
+    const doc = await selectedDino.get();
+    response.send(doc.data())
 })
 
 app.get('/dinosaur/:dino', async (request, response) => {
