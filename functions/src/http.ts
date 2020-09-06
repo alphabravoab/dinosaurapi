@@ -48,9 +48,19 @@ app.get('/dinosaur/random', async (request, response) => {
 
 app.get('/dinosaur/:dino', async (request, response) => {
     const dino = request.params.dino
-    const dinoRef = db.collection('dinosaurs').doc(dino)
-    const doc = await dinoRef.get();
-    response.send(doc.data())
+    try{
+      const dinoRef = db.collection('dinosaurs').doc(dino)
+      const doc = await dinoRef.get();
+      if(doc.exists) {
+        return response.send(doc.data())
+      }
+      else {
+        throw new Error("No dino found")
+      }
+    }
+    catch(error){
+      return response.status(404).send("Dino not found")
+    }
 })
 
 app.post('/dinosaur', async (request, response) => {
