@@ -63,9 +63,19 @@ app.get('/dinosaur/:dino', async (request, response) => {
     }
 })
 
+app.put('/dinosaur/:dino', async (request, response) => {
+  const dinoDoc = request.params.dino;
+  const dino = request.body;
+  const dinoRef = db.collection('dinosaurs').doc(dinoDoc);
+  await dinoRef.set({
+      ...dino
+  }, { merge: true });
+  response.send();
+  response.status(202).end();
+})
+
 app.post('/dinosaur', async (request, response) => {
     const dino = request.body
-    console.log(dino.name)
     const dinoRef = db.collection('dinosaurs').doc(dino.name);
 
     await dinoRef.set({
@@ -82,7 +92,8 @@ app.post('/dinosaur', async (request, response) => {
             weight: dino.weight,
             image: dino.images
         })
-    response.send(`created ${dino.name}`)
+    response.send(`created ${dino.name}`);
+    response.status(201).end();
 })
 
 
