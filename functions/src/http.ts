@@ -70,8 +70,7 @@ app.put('/dinosaur/:dino', async (request, response) => {
   await dinoRef.set({
       ...dino
   }, { merge: true });
-  response.send();
-  response.status(202).end();
+  response.status(202).send();
 })
 
 app.post('/dinosaur', async (request, response) => {
@@ -92,8 +91,7 @@ app.post('/dinosaur', async (request, response) => {
             weight: dino.weight,
             image: dino.images
         })
-    response.send(`created ${dino.name}`);
-    response.status(201).end();
+    response.status(201).send(`created ${dino.name}`);
 })
 
 
