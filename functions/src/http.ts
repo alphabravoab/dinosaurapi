@@ -2,6 +2,7 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import * as express from 'express'
 import * as cors from 'cors'
+import allDinos from './tempAlldinos'
 
 const serviceAccount = require('../firebaseToken.json');
 
@@ -35,11 +36,8 @@ app.get('/dinosaur/names', async (request, response) => {
 
 app.get('/dinosaur/random', async (request, response) => {
     const dinoRef = db.collection('dinosaurs');
-    const dinos = await dinoRef.get();
-    const dinoNames: Array<string>  = [];
-    dinos.forEach(doc => {
-        dinoNames.push(doc.id);
-      })
+    // const dinos = await dinoRef.get();
+    const dinoNames: Array<string>  = allDinos
     const randomDino: string = dinoNames[Math.floor( Math.random() * dinoNames.length)]
     const selectedDino = dinoRef.doc(randomDino)
     const luckyDino = await selectedDino.get();
